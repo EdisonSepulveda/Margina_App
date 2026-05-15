@@ -1,9 +1,26 @@
 "use client"
 
 import Link from "next/link"
-import { useState } from "react"
+import { Suspense, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { Sidebar, Topbar, ActionBar, I } from "@/components/shell"
+
+function CreatedBanner() {
+  const params = useSearchParams()
+  if (params?.get("created") !== "1") return null
+  return (
+    <div className="banner-mint" style={{ marginBottom: 14 }}>
+      <I.check />
+      <strong>Campaign created.</strong>
+      <span>
+        Q2-2025 Campaign is now active. 142 invoices were uploaded and supplier invites sent.
+      </span>
+      <Link href="#" style={{ marginLeft: "auto" }}>
+        View campaign →
+      </Link>
+    </div>
+  )
+}
 
 type Row = [string, string, string, string, string, string, string, string, string]
 const ROWS: Row[] = [
@@ -23,8 +40,6 @@ const TABS: [string, number][] = [
 ]
 
 export default function CampaignsPage() {
-  const params = useSearchParams()
-  const showBanner = params?.get("created") === "1"
   const [activeTab, setActiveTab] = useState(0)
 
   return (
@@ -33,18 +48,9 @@ export default function CampaignsPage() {
       <div className="main">
         <Topbar crumb={["Workspace", "Campaigns"]} />
         <div className="content">
-          {showBanner && (
-            <div className="banner-mint" style={{ marginBottom: 14 }}>
-              <I.check />
-              <strong>Campaign created.</strong>
-              <span>
-                Q2-2025 Campaign is now active. 142 invoices were uploaded and supplier invites sent.
-              </span>
-              <Link href="#" style={{ marginLeft: "auto" }}>
-                View campaign →
-              </Link>
-            </div>
-          )}
+          <Suspense fallback={null}>
+            <CreatedBanner />
+          </Suspense>
 
           <ActionBar
             title="Campaigns"

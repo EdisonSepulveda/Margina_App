@@ -1,9 +1,23 @@
 "use client"
 
 import Link from "next/link"
-import { useState } from "react"
+import { Suspense, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { Sidebar, Topbar, ActionBar, I } from "@/components/shell"
+
+function AddedBanner() {
+  const params = useSearchParams()
+  if (params?.get("added") !== "1") return null
+  return (
+    <div className="banner-mint" style={{ marginBottom: 14 }}>
+      <I.check />
+      <strong>5 providers added.</strong>
+      <span>
+        Invitation emails were sent to each contact. You'll be notified when they accept.
+      </span>
+    </div>
+  )
+}
 
 const PROVIDERS: [string, string, string, string, string, string, string, string, string][] = [
   ["Grupo Electromecánico SRL", "1-01-23456-7", "CLI-001", "Suministros industriales", "Juan Pérez", "jperez@grupoem.com", "809-555-1234", "Electrical", "Medium"],
@@ -24,8 +38,6 @@ const TABS: [string, number][] = [
 ]
 
 export default function SuppliersPage() {
-  const params = useSearchParams()
-  const showBanner = params?.get("added") === "1"
   const [activeTab, setActiveTab] = useState(0)
 
   return (
@@ -34,15 +46,9 @@ export default function SuppliersPage() {
       <div className="main">
         <Topbar crumb={["Workspace", "Providers"]} />
         <div className="content">
-          {showBanner && (
-            <div className="banner-mint" style={{ marginBottom: 14 }}>
-              <I.check />
-              <strong>5 providers added.</strong>
-              <span>
-                Invitation emails were sent to each contact. You'll be notified when they accept.
-              </span>
-            </div>
-          )}
+          <Suspense fallback={null}>
+            <AddedBanner />
+          </Suspense>
 
           <ActionBar
             title="Providers"
