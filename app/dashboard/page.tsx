@@ -1,3 +1,5 @@
+"use client"
+
 import { Sidebar, Topbar, I } from "@/components/shell"
 
 export default function DashboardPage() {
