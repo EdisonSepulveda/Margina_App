@@ -1,6 +1,6 @@
 "use client"
 
-import { Sidebar, Topbar, I } from "@/components/shell"
+import { Sidebar, Topbar, IDoc, IChev } from "@/components/shell"
 
 export default function DashboardPage() {
   return (
@@ -47,10 +47,10 @@ export default function DashboardPage() {
             </div>
             <div style={{ display: "flex", gap: 8 }}>
               <button className="btn">
-                <I.doc /> Export report
+                <IDoc /> Export report
               </button>
               <button className="btn primary">
-                <I.chev /> Open campaign
+                <IChev /> Open campaign
               </button>
             </div>
           </div>
